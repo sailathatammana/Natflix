@@ -32,7 +32,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
         // Whitelist
         http
-                .authorizeRequests().antMatchers("/login", "/register").permitAll()
+                .authorizeRequests().antMatchers("/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated();
 
