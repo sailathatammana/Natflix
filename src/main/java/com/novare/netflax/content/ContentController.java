@@ -1,6 +1,8 @@
 package com.novare.netflax.content;
 
 import com.novare.netflax.ResourceNotFoundException;
+import com.novare.netflax.contentDetails.ContentDetails;
+import com.novare.netflax.contentDetails.ContentDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +15,24 @@ import java.util.stream.Collectors;
 public class ContentController {
 
     ContentRepository contentRepository;
+    ContentDetailsRepository contentDetailsRepository;
 
     @Autowired
-    public ContentController(ContentRepository contentRepository) {
+    public ContentController(ContentRepository contentRepository, ContentDetailsRepository contentDetailsRepository) {
         this.contentRepository = contentRepository;
+        this.contentDetailsRepository = contentDetailsRepository;
     }
 
     @PostMapping("/content/create/")
     public ResponseEntity<Content> createContent(@RequestBody Content content) {
+        if (content.getType_id() != 1) {
+            ContentDetails details = new ContentDetails();
+            details.setVideo_code("");
+            content.setContentDetails(details);
+            details.setContent(content);
+            contentRepository.save(content);
+            contentDetailsRepository.save(details);
+        }
         contentRepository.save(content);
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
@@ -48,7 +60,7 @@ public class ContentController {
     }
 
     @DeleteMapping("/content/delete/{id}")
-    public ResponseEntity<Content> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Content> deleteContent(@PathVariable Long id) {
         Content content = contentRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         contentRepository.delete(content);
         return new ResponseEntity<>(HttpStatus.OK);

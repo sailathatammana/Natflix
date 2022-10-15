@@ -17,7 +17,7 @@ public class ContentCategoryController {
     }
 
     @PostMapping("/content/category")
-    public ResponseEntity<ContentCategory> createPost(@RequestBody ContentCategory contentCategory) {
+    public ResponseEntity<ContentCategory> createCategory(@RequestBody ContentCategory contentCategory) {
         contentCategoryRepository.save(contentCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(contentCategory);
     }

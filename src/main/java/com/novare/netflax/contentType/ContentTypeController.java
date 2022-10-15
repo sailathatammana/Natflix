@@ -18,7 +18,7 @@ public class ContentTypeController {
     }
 
     @PostMapping("/content/type")
-    public ResponseEntity<ContentType> createPost(@RequestBody ContentType contentType) {
+    public ResponseEntity<ContentType> createType(@RequestBody ContentType contentType) {
         contentTypeRepository.save(contentType);
         return ResponseEntity.status(HttpStatus.CREATED).body(contentType);
     }
