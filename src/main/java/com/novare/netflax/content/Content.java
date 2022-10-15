@@ -1,5 +1,6 @@
 package com.novare.netflax.content;
 
+import com.novare.netflax.contentDetails.ContentDetails;
 import com.novare.netflax.seriesDetails.SeriesDetails;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class Content {
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<SeriesDetails> seriesDetails;
+
+    @OneToOne(mappedBy = "content", cascade = CascadeType.ALL)
+    private ContentDetails contentDetails;
 
     public Long getId() {
         return id;
@@ -94,5 +98,13 @@ public class Content {
 
     public void setSeriesDetails(List<SeriesDetails> seriesDetails) {
         this.seriesDetails = seriesDetails;
+    }
+
+    public ContentDetails getContentDetails() {
+        return contentDetails;
+    }
+
+    public void setContentDetails(ContentDetails contentDetails) {
+        this.contentDetails = contentDetails;
     }
 }

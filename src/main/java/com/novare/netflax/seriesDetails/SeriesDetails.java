@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.novare.netflax.content.Content;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "details_series")
