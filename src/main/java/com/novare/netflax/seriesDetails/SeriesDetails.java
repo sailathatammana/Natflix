@@ -1,6 +1,13 @@
 package com.novare.netflax.seriesDetails;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.novare.netflax.content.Content;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "details_series")
@@ -9,15 +16,19 @@ public class SeriesDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private int season_number;
-    @Column(nullable = false)
     private int episode_number;
-    @Column(nullable = false)
     private String title;
     private String summary;
     private String thumbnail_url;
     private String video_code;
+
+    @ManyToOne
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JoinColumn(nullable = false)
+    @JsonIgnore
+    private Content content;
 
     public Long getId() {
         return id;
@@ -73,5 +84,13 @@ public class SeriesDetails {
 
     public void setVideo_code(String video_code) {
         this.video_code = video_code;
+    }
+
+    public Content getContent() {
+        return content;
+    }
+
+    public void setContent(Content content) {
+        this.content = content;
     }
 }

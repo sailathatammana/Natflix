@@ -1,6 +1,9 @@
 package com.novare.netflax.content;
 
+import com.novare.netflax.seriesDetails.SeriesDetails;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "content")
@@ -17,6 +20,9 @@ public class Content {
     private String logo_url;
     private String banner_url;
     private String thumbnail_url;
+
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
+    private List<SeriesDetails> seriesDetails;
 
     public Long getId() {
         return id;
@@ -80,5 +86,13 @@ public class Content {
 
     public void setThumbnail_url(String thumbnail_url) {
         this.thumbnail_url = thumbnail_url;
+    }
+
+    public List<SeriesDetails> getSeriesDetails() {
+        return seriesDetails;
+    }
+
+    public void setSeriesDetails(List<SeriesDetails> seriesDetails) {
+        this.seriesDetails = seriesDetails;
     }
 }
