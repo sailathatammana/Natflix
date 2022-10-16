@@ -25,6 +25,18 @@ public class ContentController {
 
     @PostMapping("/content/create/")
     public ResponseEntity<Content> createContent(@RequestBody Content content) {
+        if (content.getType_id() == 0) {
+            content.setType_id(1);
+        }
+        if (content.getLogo_url() == null) {
+            content.setLogo_url("");
+        }
+        if (content.getBanner_url() == null) {
+            content.setBanner_url("");
+        }
+        if (content.getThumbnail_url() == null) {
+            content.setThumbnail_url("");
+        }
         if (content.getType_id() != 1) {
             ContentDetails details = new ContentDetails();
             details.setVideo_code("");

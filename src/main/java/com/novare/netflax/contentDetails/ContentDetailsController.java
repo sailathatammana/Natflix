@@ -18,14 +18,6 @@ public class ContentDetailsController {
         this.contentDetailsRepository = contentDetailsRepository;
     }
 
-/*    @PostMapping("details-other/create/{contentId}")
-    public ResponseEntity<ContentDetails> createContentDetails(@PathVariable Long contentId, @RequestBody ContentDetails details) {
-        Content content = contentRepository.findById(contentId).orElseThrow(ResourceNotFoundException::new);
-        details.setContent(content);
-        contentDetailsRepository.save(details);
-        return ResponseEntity.status(HttpStatus.CREATED).body(details);
-    }*/
-
     @GetMapping("details-other/{contentId}")
     public ResponseEntity<ContentDetails> listDetailsOnContent(@PathVariable Long contentId) {
         Content content = contentRepository.findById(contentId).orElseThrow(ResourceNotFoundException::new);

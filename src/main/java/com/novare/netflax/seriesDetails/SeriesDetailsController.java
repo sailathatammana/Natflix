@@ -24,6 +24,9 @@ public class SeriesDetailsController {
     @PostMapping("details-series/create/{contentId}")
     public ResponseEntity<SeriesDetails> createSeries(@PathVariable Long contentId, @RequestBody SeriesDetails seriesDetails) {
         Content content = contentRepository.findById(contentId).orElseThrow(ResourceNotFoundException::new);
+        if (seriesDetails.getThumbnail_url() == null) {
+            seriesDetails.setThumbnail_url("");
+        }
         seriesDetails.setContent(content);
         seriesDetailsRepository.save(seriesDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(seriesDetails);
