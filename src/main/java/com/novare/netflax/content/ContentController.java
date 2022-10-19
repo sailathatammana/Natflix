@@ -1,8 +1,6 @@
 package com.novare.netflax.content;
 
 import com.novare.netflax.ResourceNotFoundException;
-import com.novare.netflax.contentDetails.ContentDetails;
-import com.novare.netflax.contentDetails.ContentDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,38 +13,18 @@ import java.util.stream.Collectors;
 public class ContentController {
 
     ContentRepository contentRepository;
-    ContentDetailsRepository contentDetailsRepository;
+    ContentService contentService;
 
     @Autowired
-    public ContentController(ContentRepository contentRepository, ContentDetailsRepository contentDetailsRepository) {
+    public ContentController(ContentRepository contentRepository, ContentService contentService) {
         this.contentRepository = contentRepository;
-        this.contentDetailsRepository = contentDetailsRepository;
+        this.contentService = contentService;
     }
 
     @PostMapping("/content/create/")
     public ResponseEntity<Content> createContent(@RequestBody Content content) {
-        if (content.getType_id() == 0) {
-            content.setType_id(1);
-        }
-        if (content.getLogo_url() == null) {
-            content.setLogo_url("");
-        }
-        if (content.getBanner_url() == null) {
-            content.setBanner_url("");
-        }
-        if (content.getThumbnail_url() == null) {
-            content.setThumbnail_url("");
-        }
-        if (content.getType_id() != 1) {
-            ContentDetails details = new ContentDetails();
-            details.setVideo_code("");
-            content.setContentDetails(details);
-            details.setContent(content);
-            contentRepository.save(content);
-            contentDetailsRepository.save(details);
-        }
-        contentRepository.save(content);
-        return ResponseEntity.status(HttpStatus.CREATED).body(content);
+        Content createData = contentService.createContent(content);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createData);
     }
 
     @GetMapping("/content")
