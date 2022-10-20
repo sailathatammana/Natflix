@@ -1,8 +1,8 @@
-package com.novare.netflax;
+package com.novare.netflax.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HelloInterface extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
 }

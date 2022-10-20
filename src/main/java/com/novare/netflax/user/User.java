@@ -1,4 +1,4 @@
-package com.novare.netflax;
+package com.novare.netflax.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,7 +15,6 @@ import javax.validation.constraints.NotEmpty;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Email(message = "Invalid email address! Please provide a valid email address")
@@ -23,26 +22,11 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-
-    @Length(min = 5, max = 100, message = "Password length most be between 5-100 characters")
-    @Column(name = "password")
     private String password;
 
-    @Length(min = 3, max = 100, message = "Name must be between 3-100 characters")
-    @Column(name = "name")
     private String name;
 
-
-    // Hibernate needs a default constructor to function
-    public User() {
-    }
-
-    public User(@Email(message = "Invalid email address! Please provide a valid email address") @NotEmpty(message = "Please provide an email address") String email, @Length(min = 5, max = 100, message = "Password length most be between 5-100 characters") String password, @Length(min = 3, max = 100, message = "Name must be between 3-100 characters") String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
-
+    private int userType;
 
     public Long getId() {
         return id;
@@ -76,6 +60,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 }
 

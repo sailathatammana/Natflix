@@ -1,5 +1,6 @@
-package com.novare.netflax;
+package com.novare.netflax.user;
 
+import com.novare.netflax.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-public class HelloController {
+public class UserController {
 
     @Autowired
-    HelloInterface helloInterface;
+    UserRepository helloInterface;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public HelloController(HelloInterface helloInterface) {
+    public UserController(UserRepository helloInterface) {
         this.helloInterface = helloInterface;
     }
 
