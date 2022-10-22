@@ -50,7 +50,7 @@ public class ContentController {
                 .body(file);
     }
 
-    @PostMapping(value = "/content/create/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/content/create/")
     public ResponseEntity<Content> createContent(@RequestBody Content content) {
         if (content.getThumbnail_url() != null) {
             String thumbnail = contentService.image(content.getThumbnail_url());
@@ -82,19 +82,19 @@ public class ContentController {
         return ResponseEntity.ok(contents);
     }
 
-    @PutMapping(value = "/content/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping("/content/update/{id}")
     public ResponseEntity<Content> updateContent(@PathVariable Long id, @RequestBody Content updatedContent) {
         contentRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         updatedContent.setId(id);
-        if (!(Objects.equals(updatedContent.getThumbnail_url(), "")||(updatedContent.getThumbnail_url().contains("http://localhost:8080/files")))) {
+        if (!(Objects.equals(updatedContent.getThumbnail_url(), "") || (updatedContent.getThumbnail_url().contains("http://localhost:8080/files")))) {
             String thumbnail = contentService.image(updatedContent.getThumbnail_url());
             updatedContent.setThumbnail_url(thumbnail);
         }
-        if (!(Objects.equals(updatedContent.getBanner_url(), "")||(updatedContent.getBanner_url().contains("http://localhost:8080/files")))) {
+        if (!(Objects.equals(updatedContent.getBanner_url(), "") || (updatedContent.getBanner_url().contains("http://localhost:8080/files")))) {
             String banner = contentService.image(updatedContent.getBanner_url());
             updatedContent.setBanner_url(banner);
         }
-        if (!(Objects.equals(updatedContent.getLogo_url(), "")||(updatedContent.getLogo_url().contains("http://localhost:8080/files")))) {
+        if (!(Objects.equals(updatedContent.getLogo_url(), "") || (updatedContent.getLogo_url().contains("http://localhost:8080/files")))) {
             String logo = contentService.image(updatedContent.getLogo_url());
             updatedContent.setLogo_url(logo);
         }
