@@ -1,28 +1,68 @@
 package com.novare.netflax.content;
 
 import com.novare.netflax.ResourceNotFoundException;
+import com.novare.netflax.uploadServices.IStorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 public class ContentController {
+    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     ContentRepository contentRepository;
     ContentService contentService;
+    private final IStorageService iStorageService;
 
     @Autowired
-    public ContentController(ContentRepository contentRepository, ContentService contentService) {
+    public ContentController(ContentRepository contentRepository, ContentService contentService, IStorageService iStorageService) {
         this.contentRepository = contentRepository;
         this.contentService = contentService;
+        this.iStorageService = iStorageService;
     }
 
-    @PostMapping("/content/create/")
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable String filename, HttpServletRequest request) {
+        Resource file = iStorageService.loadAsResource(filename);
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(file.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            logger.info("Could not determine file type.");
+        }
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(file);
+    }
+
+    @PostMapping(value = "/content/create/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Content> createContent(@RequestBody Content content) {
+        if(content.getThumbnail_url()!=null){
+            String thumbnail = contentService.image(content.getThumbnail_url());
+            content.setThumbnail_url(thumbnail);
+        }
+        if (content.getBanner_url()!=null) {
+            String banner = contentService.image(content.getBanner_url());
+            content.setBanner_url(banner);
+        }
+        if (content.getLogo_url()!=null) {
+            String logo = contentService.image(content.getLogo_url());
+            content.setLogo_url(logo);
+        }
         Content createData = contentService.createContent(content);
         return ResponseEntity.status(HttpStatus.CREATED).body(createData);
     }
