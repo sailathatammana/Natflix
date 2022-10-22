@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,15 +52,15 @@ public class ContentController {
 
     @PostMapping(value = "/content/create/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Content> createContent(@RequestBody Content content) {
-        if(content.getThumbnail_url()!=null){
+        if (content.getThumbnail_url() != null) {
             String thumbnail = contentService.image(content.getThumbnail_url());
             content.setThumbnail_url(thumbnail);
         }
-        if (content.getBanner_url()!=null) {
+        if (content.getBanner_url() != null) {
             String banner = contentService.image(content.getBanner_url());
             content.setBanner_url(banner);
         }
-        if (content.getLogo_url()!=null) {
+        if (content.getLogo_url() != null) {
             String logo = contentService.image(content.getLogo_url());
             content.setLogo_url(logo);
         }
@@ -81,11 +82,23 @@ public class ContentController {
         return ResponseEntity.ok(contents);
     }
 
-    @PutMapping("/content/update/{id}")
+    @PutMapping(value = "/content/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Content> updateContent(@PathVariable Long id, @RequestBody Content updatedContent) {
         contentRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         updatedContent.setId(id);
-        Content content = contentRepository.save(updatedContent);
+        if (!(Objects.equals(updatedContent.getThumbnail_url(), "")||(updatedContent.getThumbnail_url().contains("http://localhost:8080/files")))) {
+            String thumbnail = contentService.image(updatedContent.getThumbnail_url());
+            updatedContent.setThumbnail_url(thumbnail);
+        }
+        if (!(Objects.equals(updatedContent.getBanner_url(), "")||(updatedContent.getBanner_url().contains("http://localhost:8080/files")))) {
+            String banner = contentService.image(updatedContent.getBanner_url());
+            updatedContent.setBanner_url(banner);
+        }
+        if (!(Objects.equals(updatedContent.getLogo_url(), "")||(updatedContent.getLogo_url().contains("http://localhost:8080/files")))) {
+            String logo = contentService.image(updatedContent.getLogo_url());
+            updatedContent.setLogo_url(logo);
+        }
+        contentRepository.save(updatedContent);
         return ResponseEntity.ok(updatedContent);
     }
 
