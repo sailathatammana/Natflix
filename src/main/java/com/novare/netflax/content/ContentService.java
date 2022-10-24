@@ -2,18 +2,24 @@ package com.novare.netflax.content;
 
 import com.novare.netflax.contentDetails.ContentDetails;
 import com.novare.netflax.contentDetails.ContentDetailsRepository;
+import com.novare.netflax.uploadServices.IStorageService;
+import com.novare.netflax.utils.FileUtil;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Service
 public class ContentService {
 
     ContentRepository contentRepository;
     ContentDetailsRepository contentDetailsRepository;
+    private final IStorageService iStorageService;
 
 
-    public ContentService(ContentRepository contentRepository, ContentDetailsRepository contentDetailsRepository){
+    public ContentService(ContentRepository contentRepository, ContentDetailsRepository contentDetailsRepository,IStorageService iStorageService){
         this.contentRepository=contentRepository;
         this.contentDetailsRepository = contentDetailsRepository;
+        this.iStorageService = iStorageService;
     }
 
     public Content createContent(Content content){
@@ -42,5 +48,16 @@ public class ContentService {
         }
         contentRepository.save(content);
         return content;
+    }
+
+    public String image(String imageUrl) {
+        // Start process to handle a base64 file
+        String imageDataBytes = FileUtil.getImageFromBase64(imageUrl);
+        // so you get only the image bytes and then decode them:
+        byte[] decodedBytes = Base64.decodeBase64(imageDataBytes);
+        String image = iStorageService.storeBase64(decodedBytes);
+        // End process to handle a base64 file
+        String imgUrl = MvcUriComponentsBuilder.fromMethodName(ContentController.class, "getFile", image, null).build().toString();
+        return imgUrl;
     }
 }
