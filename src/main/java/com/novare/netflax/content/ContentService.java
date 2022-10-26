@@ -16,13 +16,13 @@ public class ContentService {
     private final IStorageService iStorageService;
 
 
-    public ContentService(ContentRepository contentRepository, ContentDetailsRepository contentDetailsRepository,IStorageService iStorageService){
-        this.contentRepository=contentRepository;
+    public ContentService(ContentRepository contentRepository, ContentDetailsRepository contentDetailsRepository, IStorageService iStorageService) {
+        this.contentRepository = contentRepository;
         this.contentDetailsRepository = contentDetailsRepository;
         this.iStorageService = iStorageService;
     }
 
-    public Content createContent(Content content){
+    public Content createContent(Content content) {
         if (content.getType_id() == 0) {
             content.setType_id(1);
         }
@@ -51,12 +51,9 @@ public class ContentService {
     }
 
     public String image(String imageUrl) {
-        // Start process to handle a base64 file
         String imageDataBytes = FileUtil.getImageFromBase64(imageUrl);
-        // so you get only the image bytes and then decode them:
         byte[] decodedBytes = Base64.decodeBase64(imageDataBytes);
         String image = iStorageService.storeBase64(decodedBytes);
-        // End process to handle a base64 file
         String imgUrl = MvcUriComponentsBuilder.fromMethodName(ContentController.class, "getFile", image, null).build().toString();
         return imgUrl;
     }

@@ -16,11 +16,11 @@ public final class FileUtil {
     }
 
     public static String getExtension(InputStream inputStream) throws IOException {
-        try{
+        try {
             return URLConnection.guessContentTypeFromStream(inputStream).split("/")[1];
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.error("Could not determine file extension.");
-            throw  new IOException("FileUtil has an error cannot retrieve extension file");
+            throw new IOException("FileUtil has an error cannot retrieve extension file");
         }
     }
 
@@ -33,10 +33,10 @@ public final class FileUtil {
     /*
      * This method extract the argument images | string, you must get the data after data:image\/png;base64,
      * */
-    public static String getImageFromBase64(String base64Image){
+    public static String getImageFromBase64(String base64Image) {
         try {
             return base64Image.substring(base64Image.indexOf(",") + 1);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Could not extract the image string.");
             return null;
         }

@@ -52,7 +52,8 @@ public class SeriesDetailsController {
     public ResponseEntity<SeriesDetails> updateSeriesDetails(@PathVariable Long id, @RequestBody SeriesDetails updatedSeriesDetails) {
         SeriesDetails seriesDetails = seriesDetailsRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         updatedSeriesDetails.setId(id);
-        if (!(Objects.equals(updatedSeriesDetails.getThumbnail_url(), "") || (updatedSeriesDetails.getThumbnail_url().contains("http://localhost:8080/files")))) {
+        String thumbnailData = updatedSeriesDetails.getThumbnail_url();
+        if (!(Objects.equals(thumbnailData, "") || (thumbnailData.contains("http://localhost:8080/files")))) {
             String thumbnail = seriesDetailsService.image(updatedSeriesDetails.getThumbnail_url());
             updatedSeriesDetails.setThumbnail_url(thumbnail);
         }

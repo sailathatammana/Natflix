@@ -1,6 +1,6 @@
 package com.novare.netflax.exceptions;
 
-public class StorageFileNotFoundException extends StorageException{
+public class StorageFileNotFoundException extends StorageException {
 
     public StorageFileNotFoundException(String message) {
         super(message);

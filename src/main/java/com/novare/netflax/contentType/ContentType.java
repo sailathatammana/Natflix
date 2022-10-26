@@ -13,7 +13,6 @@ public class ContentType {
     @Column(nullable = false)
     private String type;
 
-
     public Long getId() {
         return id;
     }
@@ -29,6 +28,4 @@ public class ContentType {
     public void setType(String type) {
         this.type = type;
     }
-
-
 }
