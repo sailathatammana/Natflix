@@ -10,12 +10,14 @@ The application is build using Spring,Docker and PostgreSQL. Check the following
 - [PostgreSQL](https://www.postgresql.org)
 
 ## Setup
+
 Our development environment for a application will consist of:
 
 1. Database (Postgres).
 2. Backend server (Spring).
 
 ### Prerequisites
+
 - `docker` and `docker-compose`.
 - `nodejs`.
 - `Java 11`.
@@ -23,16 +25,24 @@ Our development environment for a application will consist of:
 - `IDE able to build projects if you plan to run from an IDE`.
 
 ### Starting the database
+
 In the root folder, run
+
 ```
 docker-compose up
 ```
 
 ### Starting the backend server
+
 Open the root folder and run
+
 ```
 ./gradlew bootRun
 ```
+
+The front-end build is integrated with the back-end, and stored in the /static/folder.So, Open browser and
+visit http://localhost:8080 for the front-end web interface.One can also run
+Front-end application manually by following the instructions [here](https://github.com/sailathatammana/Natflix-frontend)
 
 ## Project organization
 
