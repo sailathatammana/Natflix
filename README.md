@@ -44,6 +44,11 @@ The front-end build is integrated with the back-end, and stored in the /static/f
 visit http://localhost:8080 for the front-end web interface.One can also run
 Front-end application manually by following the instructions [here](https://github.com/sailathatammana/Natflix-frontend)
 
+In order to access the admin section here are credentials:
+
+- email : admin@gmail.com
+- password :12345678
+
 ## Project organization
 
 ### Requirement gathering
